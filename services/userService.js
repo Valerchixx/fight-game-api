@@ -17,8 +17,8 @@ class UserService {
     return users;
   }
 
-  getUserById(userId) {
-    const user = this.search(userId);
+  getUserById(id) {
+    const user = this.search({id});
     return user
   }
 
