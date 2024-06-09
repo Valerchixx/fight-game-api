@@ -27,8 +27,12 @@ class UserService {
     return newUser;
   }
 
-  updateUser(userId) {
-
+  updateUser(id, data) {
+    const updatedUser = userRepository.update(id, data);
+    if(!updatedUser) {
+      return null;
+    }
+    return updatedUser;
   }
 
   deleteUser(id) {
@@ -37,6 +41,23 @@ class UserService {
       return userRepository.delete(id)
     }
     return null;
+  }
+
+  isPhoneNumberValid(phone) {
+    return phone.startsWith('+380') && phone.length === 13
+  }
+
+  isEmailValid(email) {
+    const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    return emailRegex.test(email);
+  }
+
+  isPasswordCorrect(password) {
+    return typeof password === 'string' && password.length >= 3;
+  }
+
+  isNoRedundantKeys(bodyObject, model) {
+    return Object.keys(bodyObject).every(key => Object.keys(model).includes(key))
   }
 }
 

@@ -36,13 +36,28 @@ router.post('/', createUserValid, (req, res, next) => {
   next()
 }, responseMiddleware)
 
-router.patch('/:id',updateUserValid, (req, res) => {}, responseMiddleware)
+router.patch('/:id',updateUserValid, (req, res, next) => {
+  if(res.error) {
+    return next()
+  }
+  const userId = req.params.id;
+  const dataToUpdate = req.body;
+  const updatedUser = userService.updateUser(userId, dataToUpdate);
+  if(updatedUser === null) {
+    res.error = 'Error while updating user'
+  } else {
+    res.data ='Updated succesfully'
+  }
+  next()
+}, responseMiddleware)
 
 router.delete('/:id', (req, res, next) => {
   const userId = req.params.id;
   const deletedUser = userService.deleteUser(userId);
   if(deletedUser === null) {
     res.error = 'User does not exist'
+  } else {
+    res.data = 'Deleted succesfully'
   }
   next()
 }, responseMiddleware)

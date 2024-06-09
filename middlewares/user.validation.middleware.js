@@ -1,31 +1,32 @@
 import { USER } from "../models/user.js";
+import { userService } from "../services/userService.js";
 
 const createUserValid = (req, res, next) => {
   const {['id']: omit, ...rest} = USER;
   const userWithoutId = rest;
   const bodyUserObject = req.body
   const isRequiredKeysPresent = Object.keys(userWithoutId).every(key => Object.keys(bodyUserObject).includes(key));
-  const isNoRedundantKeys =  Object.keys(bodyUserObject).every(key => Object.keys(userWithoutId).includes(key));
+  const isNoRedundantKeys =  userService.isNoRedundantKeys(bodyUserObject, userWithoutId);
   if(!isRequiredKeysPresent || !isNoRedundantKeys) {
-    res.error = 'Invalid user entity'
+    res.error = 'Invalid user entity while creating'
     return next();
   }
 
   const {password, phoneNumber, email} = bodyUserObject
-  const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-  const isEmailCorrect = emailRegex.test(email);
+ 
+  const isEmailCorrect = userService.isEmailValid(email);
   if(!isEmailCorrect) {
-    res.error = 'Email is not correct';
+    res.error = 'Email is not valid';
     return next();
   }
-  const isPasswordCorrect = typeof password === 'string' && password.length >= 3;
+  const isPasswordCorrect = userService.isPasswordCorrect(password);
   if(!isPasswordCorrect) {
-    res.error = 'Password is not correct';
+    res.error = 'Password is not valid';
     return next();
   }
-  const isPhoneCorrect = phoneNumber.startsWith('+380') && phoneNumber.length === 13;
+  const isPhoneCorrect = userService.isPhoneNumberValid(phoneNumber);
   if(!isPhoneCorrect) {
-    res.error = 'Phone is not correct';
+    res.error = 'Phone is not valid';
     return next();
   }
 
@@ -33,7 +34,34 @@ const createUserValid = (req, res, next) => {
 };
 
 const updateUserValid = (req, res, next) => {
-  // TODO: Implement validatior for user entity during update
+  const {['id']: omit, ...rest} = USER;
+  const userWithoutId = rest;
+  const bodyUserObject = req.body;
+  const isKeysValid = Object.keys(bodyUserObject).some(key => Object.keys(userWithoutId).includes(key));
+  const isNoRedundantKeys =  userService.isNoRedundantKeys(bodyUserObject, userWithoutId);
+
+  if(!isKeysValid || !isNoRedundantKeys) {
+    res.error = 'Invalid user entity while updating';
+    return next()
+  }
+
+  const {password, phoneNumber, email} = bodyUserObject
+ 
+  const isEmailCorrect = userService.isEmailValid(email);
+  if(!isEmailCorrect) {
+    res.error = 'Email is not valid';
+    return next();
+  }
+  const isPasswordCorrect = userService.isPasswordCorrect(password);
+  if(!isPasswordCorrect) {
+    res.error = 'Password is not valid';
+    return next();
+  }
+  const isPhoneCorrect = userService.isPhoneNumberValid(phoneNumber);
+  if(!isPhoneCorrect) {
+    res.error = 'Phone is not valid';
+    return next();
+  }
   next();
 };
 
