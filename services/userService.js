@@ -10,6 +10,22 @@ class UserService {
     }
     return item;
   }
+
+  getAllUsers() {
+
+  }
+
+  createNewUser(userData) {
+
+  }
+
+  updateUser(userId) {
+
+  }
+
+  deleteUser(userId) {
+
+  }
 }
 
 const userService = new UserService();
