@@ -27,7 +27,14 @@ router.get('/:id', (req, res, next) => {
   next()
 }, responseMiddleware)
 
-router.post('/', createUserValid, (req, res) => {}, responseMiddleware)
+router.post('/', createUserValid, (req, res, next) => {
+  if(res.error) {
+    return next()
+  }
+  const newUser = userService.createNewUser(req.body);
+  res.data = newUser
+  next()
+}, responseMiddleware)
 
 router.patch('/:id',updateUserValid, (req, res) => {}, responseMiddleware)
 

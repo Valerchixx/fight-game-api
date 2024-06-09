@@ -23,7 +23,8 @@ class UserService {
   }
 
   createNewUser(userData) {
-
+    const newUser = userRepository.create(userData);
+    return newUser;
   }
 
   updateUser(userId) {
