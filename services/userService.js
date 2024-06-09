@@ -1,8 +1,6 @@
 import { userRepository } from "../repositories/userRepository.js";
 
 class UserService {
-  // TODO: Implement methods to work with user
-
   search(search) {
     const item = userRepository.getOne(search);
     if (!item) {
@@ -12,7 +10,11 @@ class UserService {
   }
 
   getAllUsers() {
-
+    const users = userRepository.getAll()
+    if(!users) {
+      return null
+    }
+    return users;
   }
 
   createNewUser(userData) {
