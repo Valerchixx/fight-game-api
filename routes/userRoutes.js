@@ -9,17 +9,23 @@ import { responseMiddleware } from "../middlewares/response.middleware.js";
 const router = Router();
 
 router.get('/', (req, res, next) => {
-  try {
-    const users = userService.getAllUsers();
-    res.data = users;
-  } catch (error) {
-    res.error = error;
-  } finally {
-    next()
+  const users = userService.getAllUsers();
+  res.data = users;
+  if(!users) {
+    res.error = "Users were not found"
   }
+  next()
 },responseMiddleware)
 
-router.get('/:id', (req, res) => {}, responseMiddleware)
+router.get('/:id', (req, res, next) => {  
+  const userId = req.params.id;
+  const user = userService.getUserById(userId);
+  res.data = user;
+  if(!user) {
+    res.error = 'User was not found'
+  }
+  next()
+}, responseMiddleware)
 
 router.post('/', createUserValid, (req, res) => {}, responseMiddleware)
 

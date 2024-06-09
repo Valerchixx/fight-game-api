@@ -17,6 +17,11 @@ class UserService {
     return users;
   }
 
+  getUserById(userId) {
+    const user = this.search(userId);
+    return user
+  }
+
   createNewUser(userData) {
 
   }
