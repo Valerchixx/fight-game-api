@@ -17,7 +17,7 @@ router.get('/', (req, res, next) => {
   } finally {
     next()
   }
-})
+},responseMiddleware)
 
 router.get('/:id', (req, res) => {}, responseMiddleware)
 
