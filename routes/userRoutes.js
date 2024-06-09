@@ -38,6 +38,13 @@ router.post('/', createUserValid, (req, res, next) => {
 
 router.patch('/:id',updateUserValid, (req, res) => {}, responseMiddleware)
 
-router.delete('/:id', (req, res) => {}, responseMiddleware)
+router.delete('/:id', (req, res, next) => {
+  const userId = req.params.id;
+  const deletedUser = userService.deleteUser(userId);
+  if(deletedUser === null) {
+    res.error = 'User does not exist'
+  }
+  next()
+}, responseMiddleware)
 
 export { router };
