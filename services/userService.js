@@ -18,7 +18,7 @@ class UserService {
   }
 
   getUserById(id) {
-    const user = userRepository.getOne(id);
+    const user = userRepository.getOne({id});
     if(!user) {
       return null;
     }
@@ -71,7 +71,7 @@ class UserService {
   }
 
   isUserWithSameEmail(id,email) { 
-    const userWithSameEmail = userRepository.getOne(email);
+    const userWithSameEmail = userRepository.getOne({email});
     if(!userWithSameEmail || userWithSameEmail.id === id) {
       return null
     }
@@ -80,7 +80,7 @@ class UserService {
   }
 
   isUserWithSamePhone(id, phoneNumber) {
-    const userWithSamePhone = userRepository.getOne(phoneNumber);
+    const userWithSamePhone = userRepository.getOne({phoneNumber});
     if(!userWithSamePhone || userWithSamePhone.id === id) {
       return null;
     }

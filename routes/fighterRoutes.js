@@ -37,7 +37,23 @@ router.get('/:id', (req, res, next) => {
   }
 }, responseMiddleware);
 
-router.post('/', createFighterValid, (req, res, next) => {}, responseMiddleware);
+router.post('/', createFighterValid, (req, res, next) => {
+  try {
+    if(res.error) {
+      return next();
+    }
+    const newFighter = fighterService.createNewFighter(req.body);
+    if(newFighter === null) {
+      res.error = 'Error while creating fighter';
+    } else {
+      res.data = newFighter;
+    }
+  } catch(error) {
+    res.error = error;
+  } finally {
+    next();
+  }
+}, responseMiddleware);
 
 router.patch('/:id', updateFighterValid, (req, res, next) => {}, responseMiddleware);
 
