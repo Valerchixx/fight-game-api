@@ -43,7 +43,7 @@ router.patch('/:id',updateUserValid, (req, res, next) => {
   const userId = req.params.id;
   const dataToUpdate = req.body;
   const updatedUser = userService.updateUser(userId, dataToUpdate);
-  if(updatedUser === null) {
+  if(updatedUser === null || !userId) {
     res.error = 'Error while updating user'
   } else {
     res.data ='Updated succesfully'

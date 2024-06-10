@@ -28,9 +28,13 @@ class UserService {
   }
 
   updateUser(id, data) {
-    const updatedUser = userRepository.update(id, data);
-    if(!updatedUser) {
-      return null;
+    const isUserExist = this.getUserById(id);
+    let updatedUser = null;
+    if(isUserExist) {
+      updatedUser = userRepository.update(id, data);
+      if(!updatedUser) {
+        return null;
+      }  
     }
     return updatedUser;
   }
@@ -58,6 +62,23 @@ class UserService {
 
   isNoRedundantKeys(bodyObject, model) {
     return Object.keys(bodyObject).every(key => Object.keys(model).includes(key))
+  }
+
+  isUserWithSameEmail(id,email) { 
+    const userWithSameEmail = this.search({email});
+    if(!userWithSameEmail || userWithSameEmail.id === id) {
+      return null
+    }
+    return userWithSameEmail;
+
+  }
+
+  isUserWithSamePhone(id, phoneNumber) {
+    const userWithSamePhone = this.search({phoneNumber});
+    if(!userWithSamePhone || userWithSamePhone.id === id) {
+      return null;
+    }
+    return userWithSamePhone;
   }
 }
 

@@ -30,6 +30,18 @@ const createUserValid = (req, res, next) => {
     return next();
   }
 
+  const isUserWithSameEmail = userService.isUserWithSameEmail(null, email);
+  if(isUserWithSameEmail) {
+    res.error = 'User with same email already exist';
+    return next();
+  }
+
+  const isUserWithSamePhone = userService.isUserWithSamePhone(null,phoneNumber);
+  if(isUserWithSamePhone) {
+    res.error = 'User with same phone number already exist';
+    return next()
+  }
+
   next();
 };
 
@@ -45,22 +57,32 @@ const updateUserValid = (req, res, next) => {
     return next()
   }
 
-  const {password, phoneNumber, email} = bodyUserObject
+  const {password, phoneNumber, email} = bodyUserObject;
+  const id = req.params.id;
  
-  const isEmailCorrect = userService.isEmailValid(email);
-  if(!isEmailCorrect) {
+  if(email && !userService.isEmailValid(email)) {
     res.error = 'Email is not valid';
     return next();
   }
-  const isPasswordCorrect = userService.isPasswordCorrect(password);
-  if(!isPasswordCorrect) {
+  if(password && !userService.isPasswordCorrect(password)) {
     res.error = 'Password is not valid';
     return next();
   }
-  const isPhoneCorrect = userService.isPhoneNumberValid(phoneNumber);
-  if(!isPhoneCorrect) {
+  if(phoneNumber && !userService.isPhoneNumberValid(phoneNumber)) {
     res.error = 'Phone is not valid';
     return next();
+  }
+
+  const isUserWithSameEmail = userService.isUserWithSameEmail(id,email);
+  if(isUserWithSameEmail) {
+    res.error = 'User with same email already exist';
+    return next();
+  }
+
+  const isUserWithSamePhone = userService.isUserWithSamePhone(id,phoneNumber);
+  if(isUserWithSamePhone) {
+    res.error = 'User with same phone number already exist';
+    return next()
   }
   next();
 };
