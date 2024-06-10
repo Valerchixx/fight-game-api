@@ -36,9 +36,9 @@ class UserService {
   updateUser(id, data) {
     const user = this.getUserById(id);
     if(user) {
-      return updatedUser = userRepository.update(id, data); 
+      return userRepository.update(id, data); 
     }
-    return updatedUser;
+    return null;
   }
 
   deleteUser(id) {
