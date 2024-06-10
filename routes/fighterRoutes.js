@@ -8,6 +8,14 @@ import {
 
 const router = Router();
 
-// TODO: Implement route controllers for fighter
+router.get('/', (req, res,next) => {}, responseMiddleware);
+
+router.get('/:id', (req, res, next) => {}, responseMiddleware);
+
+router.post('/', createFighterValid, (req, res, next) => {}, responseMiddleware);
+
+router.patch('/:id', updateFighterValid, (req, res, next) => {}, responseMiddleware);
+
+router.delete('/:id', (req, res, next) => {}, responseMiddleware);
 
 export { router };
