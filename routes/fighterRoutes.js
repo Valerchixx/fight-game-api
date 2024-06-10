@@ -22,7 +22,20 @@ router.get('/', (req, res,next) => {
   }
 }, responseMiddleware);
 
-router.get('/:id', (req, res, next) => {}, responseMiddleware);
+router.get('/:id', (req, res, next) => {
+  try {
+    const fighterId = req.params.id;
+    const fighter = fighterService.getFighterById(fighterId);
+    res.data = fighter;
+    if(!fighter) {
+      res.error = 'Fighter was not found';
+    }
+  } catch(error) {
+    res.error = error;
+  } finally {
+    next();
+  }
+}, responseMiddleware);
 
 router.post('/', createFighterValid, (req, res, next) => {}, responseMiddleware);
 

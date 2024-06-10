@@ -10,7 +10,13 @@ class FighterService {
     return fighters;
   };
 
-  getFighterById(id) {};
+  getFighterById(id) {
+    const fighter = fighterRepository.getOne(id);
+    if(!fighter) {
+      return null;
+    }
+    return fighter;
+  };
 
   createNewFighter(data) {};
 
