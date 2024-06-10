@@ -63,10 +63,10 @@ router.patch('/:id',updateUserValid, (req, res, next) => {
     const userId = req.params.id;
     const dataToUpdate = req.body;
     const updatedUser = userService.updateUser(userId, dataToUpdate);
-    if(updatedUser === null) {
+    if(!updatedUser) {
       res.error = 'Error while updating user'
     } else {
-      res.data ='Updated succesfully'
+      res.data = updatedUser;
     }
   } catch(error) {
     res.error = error;
@@ -79,10 +79,10 @@ router.delete('/:id', (req, res, next) => {
   try {
     const userId = req.params.id;
     const deletedUser = userService.deleteUser(userId);
-    if(deletedUser === null) {
-      res.error = 'User does not exist'
+    if(!deletedUser) {
+      res.error = 'Error while deleting user'
     } else {
-      res.data = 'Deleted succesfully'
+      res.data = deletedUser;
     }
   } catch(error) {
     res.error = error;

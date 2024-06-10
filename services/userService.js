@@ -46,7 +46,7 @@ class UserService {
   }
 
   deleteUser(id) {
-    const user = this.getUserById(id)
+    const user = this.getUserById(id);
     if(user) {
       return userRepository.delete(id)
     }
