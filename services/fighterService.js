@@ -27,7 +27,13 @@ class FighterService {
 
   updateFighter(id, data) {};
 
-  deleteFighter(id) {};
+  deleteFighter(id) {
+    const fighter = this.getFighterById(id);
+    if(fighter) {
+      return fighterRepository.delete(id)
+    }
+    return null;
+  };
 
   isNoRedundantKeys(body, model) {
     return Object.keys(body).every(key => Object.keys(model).includes(key));

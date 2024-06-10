@@ -57,6 +57,20 @@ router.post('/', createFighterValid, (req, res, next) => {
 
 router.patch('/:id', updateFighterValid, (req, res, next) => {}, responseMiddleware);
 
-router.delete('/:id', (req, res, next) => {}, responseMiddleware);
+router.delete('/:id', (req, res, next) => {
+  try {
+    const fighterId = req.params.id;
+    const deletedFighter = fighterService.deleteFighter(fighterId);
+    if(!deletedFighter) {
+      res.error = "Error while deleting fighter";
+    } else {
+      res.data = deletedFighter;
+    }
+  } catch(error) {
+    res.error = error;
+  } finally {
+    next();
+  }
+}, responseMiddleware);
 
 export { router };
