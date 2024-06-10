@@ -8,7 +8,19 @@ import {
 
 const router = Router();
 
-router.get('/', (req, res,next) => {}, responseMiddleware);
+router.get('/', (req, res,next) => {
+  try {
+    const fighters = fighterService.getAllFighters();
+    res.data = fighters;
+    if(!fighters) {
+      res.error = 'Fighters were not found'
+    }
+  } catch(error) {
+    res.error = error
+  } finally {
+    next();
+  }
+}, responseMiddleware);
 
 router.get('/:id', (req, res, next) => {}, responseMiddleware);
 
