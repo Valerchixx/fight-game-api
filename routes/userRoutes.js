@@ -43,7 +43,11 @@ router.post('/', createUserValid, (req, res, next) => {
       return next()
     }
     const newUser = userService.createNewUser(req.body);
-    res.data = newUser;
+    if(newUser === null) {
+      res.error = 'Error while creating user'
+    } else {
+      res.data = newUser;
+    } 
   } catch(error) {
     res.error = error;
   } finally {

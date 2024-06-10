@@ -27,6 +27,9 @@ class UserService {
 
   createNewUser(userData) {
     const newUser = userRepository.create(userData);
+    if(!newUser) {
+      return null;
+    }
     return newUser;
   }
 

@@ -1,7 +1,6 @@
 import { fighterRepository } from "../repositories/fighterRepository.js";
 
 class FighterService {
-
   getAllFighters() {
     const fighters = fighterRepository.getAll();
     if(!fighters) {
@@ -18,7 +17,8 @@ class FighterService {
     return fighter;
   };
 
-  createNewFighter(data) {};
+  createNewFighter(data) {
+  };
 
   updateFighter(id, data) {};
 
