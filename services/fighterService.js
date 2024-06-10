@@ -1,7 +1,16 @@
 import { fighterRepository } from "../repositories/fighterRepository.js";
 
 class FighterService {
-  // TODO: Implement methods to work with fighters
+
+  getAllFighters() {};
+
+  getFighterById(id) {};
+
+  createNewFighter(data) {};
+
+  updateFighter(id, data) {};
+
+  deleteFighter(id) {};
 }
 
 const fighterService = new FighterService();
