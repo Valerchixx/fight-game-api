@@ -9,57 +9,82 @@ import { responseMiddleware } from "../middlewares/response.middleware.js";
 const router = Router();
 
 router.get('/', (req, res, next) => {
-  const users = userService.getAllUsers();
-  res.data = users;
-  if(!users) {
-    res.error = "Users were not found"
+  try {
+    const users = userService.getAllUsers();
+    res.data = users;
+    if(!users) {
+      res.error = "Users were not found";
+    }
+  } catch(error) {
+    res.error = error;
+  } finally {
+    next()
   }
-  next()
 },responseMiddleware)
 
 router.get('/:id', (req, res, next) => {  
-  const userId = req.params.id;
-  const user = userService.getUserById(userId);
-  res.data = user;
-  if(!user) {
-    res.error = 'User was not found'
+  try {
+    const userId = req.params.id;
+    const user = userService.getUserById(userId);
+    res.data = user;
+    if(!user) {
+      res.error = 'User was not found'
+    }
+  } catch(error) {
+    res.error = error;
+  } finally {
+    next();
   }
-  next()
 }, responseMiddleware)
 
 router.post('/', createUserValid, (req, res, next) => {
-  if(res.error) {
-    return next()
+  try {
+    if(res.error) {
+      return next()
+    }
+    const newUser = userService.createNewUser(req.body);
+    res.data = newUser;
+  } catch(error) {
+    res.error = error;
+  } finally {
+    next();
   }
-  const newUser = userService.createNewUser(req.body);
-  res.data = newUser
-  next()
 }, responseMiddleware)
 
 router.patch('/:id',updateUserValid, (req, res, next) => {
-  if(res.error) {
+  try {
+    if(res.error) {
     return next()
+    }
+    const userId = req.params.id;
+    const dataToUpdate = req.body;
+    const updatedUser = userService.updateUser(userId, dataToUpdate);
+    if(updatedUser === null) {
+      res.error = 'Error while updating user'
+    } else {
+      res.data ='Updated succesfully'
+    }
+  } catch(error) {
+    res.error = error;
+  } finally {
+    next();
   }
-  const userId = req.params.id;
-  const dataToUpdate = req.body;
-  const updatedUser = userService.updateUser(userId, dataToUpdate);
-  if(updatedUser === null || !userId) {
-    res.error = 'Error while updating user'
-  } else {
-    res.data ='Updated succesfully'
-  }
-  next()
 }, responseMiddleware)
 
 router.delete('/:id', (req, res, next) => {
-  const userId = req.params.id;
-  const deletedUser = userService.deleteUser(userId);
-  if(deletedUser === null) {
-    res.error = 'User does not exist'
-  } else {
-    res.data = 'Deleted succesfully'
+  try {
+    const userId = req.params.id;
+    const deletedUser = userService.deleteUser(userId);
+    if(deletedUser === null) {
+      res.error = 'User does not exist'
+    } else {
+      res.data = 'Deleted succesfully'
+    }
+  } catch(error) {
+    res.error = error;
+  } finally {
+    next();
   }
-  next()
 }, responseMiddleware)
 
 export { router };
