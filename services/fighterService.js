@@ -25,7 +25,13 @@ class FighterService {
     return newFighter;
   };
 
-  updateFighter(id, data) {};
+  updateFighter(id, data) {
+    const fighter = this.getFighterById(id);
+     if(fighter) {
+      return fighterRepository.update(id,data);
+     }
+    return null;
+  };
 
   deleteFighter(id) {
     const fighter = this.getFighterById(id);

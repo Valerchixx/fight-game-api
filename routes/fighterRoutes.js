@@ -55,7 +55,25 @@ router.post('/', createFighterValid, (req, res, next) => {
   }
 }, responseMiddleware);
 
-router.patch('/:id', updateFighterValid, (req, res, next) => {}, responseMiddleware);
+router.patch('/:id', updateFighterValid, (req, res, next) => {
+  try {
+    if(res.error) {
+      return next();
+    }
+    const fighterId = req.params.id;
+    const dataToUpdate = req.body;
+    const updatedFighter = fighterService.updateFighter(fighterId, dataToUpdate);
+    if(!updatedFighter) {
+      res.error = 'Error while updating fighter';
+    } else {
+      res.data = updatedFighter;
+    }
+  } catch(error) {
+    res.error = error;
+  } finally {
+    next();
+  }
+}, responseMiddleware);
 
 router.delete('/:id', (req, res, next) => {
   try {

@@ -34,13 +34,9 @@ class UserService {
   }
 
   updateUser(id, data) {
-    const isUserExist = this.getUserById(id);
-    let updatedUser = null;
-    if(isUserExist) {
-      updatedUser = userRepository.update(id, data);
-      if(!updatedUser) {
-        return null;
-      }  
+    const user = this.getUserById(id);
+    if(user) {
+      return updatedUser = userRepository.update(id, data); 
     }
     return updatedUser;
   }
